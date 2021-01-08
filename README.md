@@ -1,8 +1,19 @@
-# frontend
+# Front-end with Vue JS
 
-## Project setup
+## Back-end Setup
+
 ```
-npm install
+git clone my api rest: https://github.com/4lessandro/api-rest-knex-postgresql
+```
+
+```
+cd api and run npm install
+```
+
+## Front-End Setup
+
+```
+git clone this repo and run npm install
 ```
 
 ### Compiles and hot-reloads for development
@@ -19,6 +30,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
