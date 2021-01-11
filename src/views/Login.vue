@@ -20,7 +20,7 @@
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -31,7 +31,16 @@ export default {
     },
     methods: {
         login() {
-            console.log('login')
+            axios.post('http://localhost:80/login', {
+                email: this.email,
+                password: this.password
+            }).then(res => {
+                localStorage.setItem('token', res.data.token)
+                this.$router.push({name: 'Home'})
+            }).catch(error => {
+                console.log(error)
+                this.error = error.response.data.error
+            })
         }
     }
 }
