@@ -4,6 +4,7 @@
         <hr>
             <div v-if="error != undefined" class="notification is-danger">
                         {{error}}
+                        <p>{{msgLogin}}</p>
             </div>
 
             <div class="columns is-centered is-4">
@@ -14,7 +15,7 @@
                     <input type="password" placeholder="Senha" class="input" v-model="password">
                     <hr>
                     <button type="submit" class="button is-success" @click="login">Entrar</button>
-                </div>            
+                </div>
             </div>
     </div>
 </template>
@@ -26,7 +27,8 @@ export default {
         return {
             password: '',
             email: '',
-            error: undefined
+            error: undefined,
+            msgLogin: undefined
         }
     },
     methods: {
@@ -35,8 +37,19 @@ export default {
                 email: this.email,
                 password: this.password
             }).then(res => {
-                localStorage.setItem('token', res.data.token)
-                this.$router.push({name: 'Home'})
+                    var dontLog = this.error = res.data.error
+
+                if(dontLog) {
+                    this.error = res.data.error
+                } else {
+                    this.error = res.data.success
+                    this.msgLogin = 'Você está sendo redirecionado, aguarde...'
+
+                    setTimeout(() => {
+                        localStorage.setItem('token', res.data.token)
+                        this.$router.push({name: 'Home'})
+                    }, 5000)
+                }
             }).catch(error => {
                 console.log(error)
                 this.error = error.response.data.error
