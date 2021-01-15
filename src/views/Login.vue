@@ -47,7 +47,7 @@ export default {
 
                     setTimeout(() => {
                         localStorage.setItem('token', res.data.token)
-                        this.$router.push({name: 'Home'})
+                        this.$router.push({name: 'Users'})
                     }, 5000)
                 }
             }).catch(error => {
