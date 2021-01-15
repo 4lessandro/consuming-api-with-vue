@@ -4,6 +4,9 @@
         <hr>
 
         <div class="column is-centered">
+            <div v-if="deleted != undefined" class="notification is-success">
+                        {{deleted}}
+            </div>
             <div class="columns is-centered is-4">
                 <table class="table is-bordered">
                     <thead>
@@ -33,7 +36,7 @@
                         <button class="delete" aria-label="close" @click="hideModal()"></button>
                         </header>
                         <footer class="modal-card-foot">
-                        <button class="button is-danger">Deletar</button>
+                        <button class="button is-danger" @click="deleteUser()">Deletar</button>
                         <button class="button" @click="hideModal()">Cancelar</button>
                         </footer>
                     </div>
@@ -64,7 +67,9 @@ export default {
     {
         return {
             users: [],
-            showModal: false
+            showModal: false,
+            deleteUserId: -1,
+            deleted: undefined
         }
     },
     methods: {
@@ -72,8 +77,22 @@ export default {
             this.showModal = false
         },
         showDeleteModal(id) {
-            console.log(`ID do usuário é: ${id}`)
+            this.deleteUserId = id
             this.showModal = true
+        },
+        deleteUser() {
+            var req = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        }
+            axios.delete('http://localhost:80/user/'+this.deleteUserId, req).then(res => {
+                this.deleted = res.data.success
+                this.users = this.users.filter(u => u.id != this.deleteUserId)
+            this.showModal = false
+            }).catch(error => {
+                console.log(error)
+            })
         }
     },
     filters:  {
